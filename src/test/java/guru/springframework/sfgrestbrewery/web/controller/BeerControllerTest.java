@@ -15,10 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -73,7 +71,7 @@ class BeerControllerTest {
         List<BeerDto> beerDtoList = Collections.singletonList(validBeer);
         BeerPagedList beerPagedList = new BeerPagedList(beerDtoList);
 
-        given(beerService.listBeers(any(), any(), any(), any())).willReturn(beerPagedList);
+        given(beerService.listBeers(any(), any(), any(), any())).willReturn(Mono.just(beerPagedList));
 
         webTestClient.get()
                 .uri("/api/v1/beer")

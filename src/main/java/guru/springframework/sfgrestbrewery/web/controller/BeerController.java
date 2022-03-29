@@ -5,12 +5,14 @@ import guru.springframework.sfgrestbrewery.web.model.BeerDto;
 import guru.springframework.sfgrestbrewery.web.model.BeerPagedList;
 import guru.springframework.sfgrestbrewery.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -30,10 +32,10 @@ public class BeerController {
 
     @GetMapping(produces = { "application/json" }, path = "beer")
     public ResponseEntity<Mono<BeerPagedList>> listBeers(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                                                   @RequestParam(value = "beerName", required = false) String beerName,
-                                                   @RequestParam(value = "beerStyle", required = false) BeerStyleEnum beerStyle,
-                                                   @RequestParam(value = "showInventoryOnHand", required = false) Boolean showInventoryOnHand){
+                                                               @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                               @RequestParam(value = "beerName", required = false) String beerName,
+                                                               @RequestParam(value = "beerStyle", required = false) BeerStyleEnum beerStyle,
+                                                               @RequestParam(value = "showInventoryOnHand", required = false) Boolean showInventoryOnHand){
 
         if (showInventoryOnHand == null) {
             showInventoryOnHand = false;
@@ -47,9 +49,9 @@ public class BeerController {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        BeerPagedList beerList = beerService.listBeers(beerName, beerStyle, PageRequest.of(pageNumber, pageSize), showInventoryOnHand);
+        Mono<BeerPagedList> beerList = beerService.listBeers(beerName, beerStyle, PageRequest.of(pageNumber, pageSize), showInventoryOnHand);
 
-        return ResponseEntity.ok(Mono.just(beerList));
+        return ResponseEntity.ok(beerList);
     }
 
     @GetMapping("beer/{beerId}")
