@@ -35,18 +35,18 @@ public class BeerServiceImpl implements BeerService {
         BeerPagedList beerPagedList;
         Page<Beer> beerPage = null;
 
-        if (!StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
-            //search both
-            beerPage = beerRepository.findAllByBeerNameAndBeerStyle(beerName, beerStyle, pageRequest);
-        } else if (!StringUtils.isEmpty(beerName) && StringUtils.isEmpty(beerStyle)) {
-            //search beer_service name
-            beerPage = beerRepository.findAllByBeerName(beerName, pageRequest);
-        } else if (StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
-            //search beer_service style
-            beerPage = beerRepository.findAllByBeerStyle(beerStyle, pageRequest);
-        } else {
+//        if (!StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
+//            //search both
+//            beerPage = beerRepository.findAllByBeerNameAndBeerStyle(beerName, beerStyle, pageRequest);
+//        } else if (!StringUtils.isEmpty(beerName) && StringUtils.isEmpty(beerStyle)) {
+//            //search beer_service name
+//            beerPage = beerRepository.findAllByBeerName(beerName, pageRequest);
+//        } else if (StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
+//            //search beer_service style
+//            beerPage = beerRepository.findAllByBeerStyle(beerStyle, pageRequest);
+//        } else {
 //            beerPage = beerRepository.findAll(pageRequest);
-        }
+//        }
 
         if (showInventoryOnHand){
             beerPagedList = new BeerPagedList(beerPage
@@ -110,7 +110,8 @@ public class BeerServiceImpl implements BeerService {
     @Cacheable(cacheNames = "beerUpcCache")
     @Override
     public BeerDto getByUpc(String upc) {
-        return beerMapper.beerToBeerDto(beerRepository.findByUpc(upc));
+//        return beerMapper.beerToBeerDto(beerRepository.findByUpc(upc));
+        return null;
     }
 
     @Override

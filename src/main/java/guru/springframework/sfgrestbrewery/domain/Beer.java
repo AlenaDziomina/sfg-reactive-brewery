@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -19,8 +21,8 @@ import java.util.UUID;
 @Builder
 public class Beer {
 
-
-    private UUID id;
+    @Id
+    private Integer id;
 
     private Long version;
 
@@ -31,7 +33,7 @@ public class Beer {
     private Integer quantityOnHand;
     private BigDecimal price;
 
-    private Timestamp createdDate;
+    private LocalDateTime createdDate;
 
-    private Timestamp lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 }
