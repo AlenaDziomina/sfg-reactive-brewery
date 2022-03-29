@@ -63,7 +63,19 @@ public class BeerController {
             showInventoryOnHand = false;
         }
 
-        return ResponseEntity.ok(beerService.getById(beerId, showInventoryOnHand));
+        return ResponseEntity.ok(beerService.getById(beerId, showInventoryOnHand)
+                .defaultIfEmpty(BeerDto.builder().build())
+                .doOnNext(beerDto -> {
+                    if (beerDto.getId() == null) {
+                        throw new NotFoundException();
+                    }
+                })
+        );
+    }
+
+    @ExceptionHandler
+    ResponseEntity<Void> handleNotFound(NotFoundException ex) {
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("beerUpc/{upc}")
@@ -104,7 +116,7 @@ public class BeerController {
     }
 
     @DeleteMapping("beer/{beerId}")
-    public ResponseEntity<Void> deleteBeerById(@PathVariable("beerId") UUID beerId){
+    public ResponseEntity<Void> deleteBeerById(@PathVariable("beerId") Integer beerId){
 
         beerService.deleteBeerById(beerId);
 
